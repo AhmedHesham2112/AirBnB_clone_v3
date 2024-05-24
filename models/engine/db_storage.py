@@ -89,5 +89,5 @@ class DBStorage:
         " count the number of objects from database"
         if cls not in classes.values():
             return 0
-        results = models.storage.all(cls).values()
+        results = models.storage.all(cls)
         return len(results)
