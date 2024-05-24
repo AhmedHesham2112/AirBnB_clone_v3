@@ -9,11 +9,11 @@ from sqlalchemy.orm import relationship
 
 if models.storage_t == 'db':
     place_amenity = Table('place_amenity', Base.metadata,
-                          Column('place_id', String(60),
+                          Column('place_id', String(60, collation='latin1_swedish_ci'), 
                                  ForeignKey('places.id', onupdate='CASCADE',
                                             ondelete='CASCADE'),
                                  primary_key=True),
-                          Column('amenity_id', String(60),
+                          Column('amenity_id', String(60, collation='latin1_swedish_ci'),
                                  ForeignKey('amenities.id', onupdate='CASCADE',
                                             ondelete='CASCADE'),
                                  primary_key=True))
@@ -23,6 +23,7 @@ class Place(BaseModel, Base):
     """Representation of Place """
     if models.storage_t == 'db':
         __tablename__ = 'places'
+        __table_args__ = {'mysql_charset': 'latin1'}
         city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
         user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
         name = Column(String(128), nullable=False)
