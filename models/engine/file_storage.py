@@ -70,7 +70,7 @@ class FileStorage:
         self.reload()
 
     def get(self, cls, id):
-        "retrieve one object from database"
+        "retrieve one object in storage"
         if cls not in classes.values():
             return None
         results = models.storage.all(cls)
@@ -83,5 +83,5 @@ class FileStorage:
         " count the number of objects in storage"
         if cls not in classes:
             return 0
-        results = models.storage.all(cls).values
+        results = models.storage.all(cls).values()
         return len(results)
