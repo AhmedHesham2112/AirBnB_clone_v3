@@ -80,7 +80,7 @@ class DBStorage:
         if cls not in classes:
             return None
         results = models.storage.all(cls)
-        for result in results.values():
+        for result in results:
             if result['id'] == id:
                 return result
         return None
