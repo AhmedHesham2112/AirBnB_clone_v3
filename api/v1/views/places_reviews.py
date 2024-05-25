@@ -10,7 +10,8 @@ from api.v1.views import app_views
 from flask import jsonify, abort, request, make_response
 
 
-@app_views.route('/places/<place_id>/reviews', methods=['GET'], strict_slashes=False)
+@app_views.route('/places/<place_id>/reviews', methods=['GET'],
+                 strict_slashes=False)
 def get_reviews(place_id):
     place = storage.get(Place, place_id)
     if place is None:
@@ -23,7 +24,8 @@ def get_reviews(place_id):
     return jsonify(reviews_list)
 
 
-@app_views.route('/reviews/<review_id>/', methods=['GET'], strict_slashes=False)
+@app_views.route('/reviews/<review_id>/',
+                 methods=['GET'], strict_slashes=False)
 def get_review(review_id):
     review = storage.get(Review, review_id)
     if not review:
@@ -79,7 +81,7 @@ def put_review(review_id):
     if type(res) != dict:
         return abort(400, description="Not a JSON")
     for key, value in res.items():
-        if key not in ["id", "place_id", "user_id","created_at", "updated_at"]:
+        if key not in ["id", "place_id", "user_id", "created_at", "updated_at"]:
             setattr(review, key, value)
     storage.save()
     return make_response(jsonify(review.to_dict()), 200)
