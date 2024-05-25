@@ -4,7 +4,7 @@ all default RESTFul API actions"""
 from models import storage
 from models.state import State
 from api.v1.views import app_views
-from flask import jsonify, abort, request
+from flask import jsonify, abort, request, make_response
 
 
 @app_views.route('/states', methods=['GET'], strict_slashes=False)
@@ -42,12 +42,12 @@ def delete_state(state_id):
 def post_state():
     res = request.get_json()
     if type(res) != dict:
-        return abort(400, {'message': 'Not a JSON'})
+        return abort(400, description='Not a JSON')
     if 'name' not in res:
-        return abort(400, {'message': 'Missing name'})
+        return abort(400, description='Missing name')
     new_state = State(**res)
     new_state.save()
-    return jsonify(new_state.to_dict()), 201
+    return make_response(jsonify(new_state.to_dict()), 201)
 
 
 @app_views.route('/states/<state_id>', methods=['PUT'],
@@ -58,9 +58,9 @@ def put_state(state_id):
         abort(404)
     res = request.get_json()
     if type(res) != dict:
-        return abort(400, {'message': 'Not a JSON'})
+        return abort(400, description='Not a JSON')
     for key, value in res.items():
         if key not in ["id", "state_id", "created_at", "updated_at"]:
             setattr(state, key, value)
     storage.save()
-    return jsonify(state.to_dict()), 200
+    return make_response(jsonify(state.to_dict()), 200)
