@@ -12,7 +12,7 @@ from flask import jsonify, abort, request, make_response
 
 @app_views.route('/places/<place_id>/reviews', methods=['GET'], strict_slashes=False)
 def get_reviews(place_id):
-    place = storage.get(Review, place_id)
+    place = storage.get(Place, place_id)
     if place is None:
         abort(404)
     reviews_list = []
@@ -47,7 +47,7 @@ def delete_review(review_id):
 @app_views.route('/places/<place_id>/reviews', methods=['POST'],
                  strict_slashes=False)
 def post_review(place_id):
-    place = storage.get(Review, place_id)
+    place = storage.get(Place, place_id)
     if not place:
         abort(404)
     res = request.get_json()
