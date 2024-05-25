@@ -3,16 +3,24 @@
 all default RESTFul API actions"""
 from models import storage
 from models.place import Place
+from models.city import City
+from models.user import User
 from api.v1.views import app_views
 from flask import jsonify, abort, request, make_response
 
 
-@app_views.route('/places', methods=['GET'], strict_slashes=False)
-def get_places():
-    dict_ = []
-    for val in storage.all(Place).values():
-        dict_.append(val.to_dict())
-    return jsonify(dict_)
+@app_views.route('/cities/<city_id>/places', methods=['GET'],
+                 strict_slashes=False)
+def get_cities(state_id):
+    state = storage.get('City', city_id)
+    if state is None:
+        abort(404)
+    cities_list = []
+    cities = storage.all(City).values()
+    for city in cities:
+        if city.state_id == state_id:
+            cities_list.append(city.to_dict())
+    return jsonify(cities_list)
 
 
 @app_views.route('/places/<place_id>', methods=['GET'],
