@@ -12,7 +12,7 @@ from models.state import State
                  strict_slashes=False)
 def get_all_states():
     '''
-    Get All States
+        Retrieve all State objects
     '''
     state_list = []
     for state in storage.all('State').values():
@@ -24,10 +24,10 @@ def get_all_states():
                  strict_slashes=False)
 def get_state(state_id):
     '''
-    Get A State
+        Retrieve one State object
     '''
     try:
-        state = storage.get("State", state_id)
+        state = storage.get('State', state_id)
         return jsonify(state.to_dict())
     except Exception:
         abort(404)
@@ -37,11 +37,11 @@ def get_state(state_id):
                  strict_slashes=False)
 def delete_state(state_id):
     '''
-    Delete A State
+        Delete a State object
     '''
     try:
-        state = storage.get("State", state_id)
-        storage.delete(state)
+        state = storage.get('State', state_id)
+        storate.delete(state)
         return jsonify({}), 200
     except Exception:
         abort(404)
@@ -51,29 +51,28 @@ def delete_state(state_id):
                  strict_slashes=False)
 def post_state():
     '''
-    Create A State
+        Create a State object
     '''
     if not request.json:
         abort(400)
-        return jsonify({"error", "Not a JSON"})
-    if "name" not in request.json:
+        return jsonify({"error": "Not a JSON"})
+    if 'name' not in request.json:
         abort(400)
-        return jsonify({"error", "Missing name"})
-
-    state = State(**request.get_json())
-    state.save()
-    return jsonify({state.to_dict()}), 201
+        return jsonify({"error": "Missing name"})
+    new_state = State(**request.get_json())
+    new_state.save()
+    return jsonify(new_state.to_dict()), 201
 
 
 @app_views.route('/states/<state_id>', methods=['PUT'],
                  strict_slashes=False)
 def put_state(state_id):
     '''
-    Update A State
+        Update a State object
     '''
-    state = storage.get("State", state_id)
+    state = storage.get('State', state_id)
     if state is None:
-        abort(400)
+        abort(404)
     if not request.json:
         return jsonify({"error": "Not a JSON"}), 400
     for key, value in request.get_json().items():
