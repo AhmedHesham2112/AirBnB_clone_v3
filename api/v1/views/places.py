@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """This module implement a rule that return a view"""
-from flask import jsonify, abort, request
+from flask import jsonify, abort, request, make_response
 from models import storage
 from api.v1.views import app_views
 from models.city import City
@@ -62,7 +62,7 @@ def insert_place(city_id):
     new_place = Place(**res)
     new_place.city_id = city_id
     new_place.save()
-    return jsonify(new_place.to_dict()), 201
+    return make_response(jsonify(new_place.to_dict()), 201)
 
 
 @app_views.route("/places/<place_id>", methods=["PUT"],
@@ -79,4 +79,4 @@ def update_place(place_id):
         if key not in ["id", "user_id", "city_id", "created_at", "updated_at"]:
             setattr(place, key, value)
     storage.save()
-    return jsonify(place.to_dict()), 200
+    return make_response(jsonify(place.to_dict()), 200)
