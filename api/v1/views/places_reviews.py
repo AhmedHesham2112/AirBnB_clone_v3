@@ -5,7 +5,6 @@ from models import storage
 from models.place import Place
 from models.review import Review
 from models.user import User
-from models.city import City
 from api.v1.views import app_views
 from flask import jsonify, abort, request, make_response
 
@@ -41,7 +40,7 @@ def delete_review(review_id):
     review = storage.get(Review, review_id)
     if review is None:
         abort(404)
-    review.delete()
+    storage.delete(review)
     storage.save()
     return make_response(jsonify({}), 200)
 
@@ -60,11 +59,8 @@ def post_review(place_id):
     user = storage.get(User, res.user_id)
     if not user:
         abort(404)
-    city = storage.get(City, res.city_id)
-    if not city:
-        abort(404)
-    if 'name' not in res:
-        return abort(400, description="Missing name")
+    if 'text' not in res:
+        return abort(400, description="Missing text")
     new_review = Review(**res)
     new_review.place_id = place.id
     new_review.save()
