@@ -2,7 +2,7 @@
 '''
     This module contains variables and methods used to connect to API
 '''
-from flask import Flask, jsonify
+from flask import Flask, jsonify, make_response
 from models import storage
 from api.v1.views import app_views
 import os
@@ -27,7 +27,7 @@ def page_not_found(error):
     '''
         Handles page not found
     '''
-    return jsonify({"error": "Not found"}), 404
+    return make_response(jsonify({"error": "Not found"}), 404)
 
 
 if __name__ == "__main__":
