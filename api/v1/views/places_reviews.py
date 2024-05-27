@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Create a new view for place objects that handles
 all default RESTFul API actions"""
+
 from models import storage
 from models.place import Place
 from models.review import Review
