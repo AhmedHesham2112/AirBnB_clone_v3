@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Create a new view for place objects that handles
+"""Create a new view for places and reveiws objects that handles
 all default RESTFul API actions"""
 
 from models import storage
